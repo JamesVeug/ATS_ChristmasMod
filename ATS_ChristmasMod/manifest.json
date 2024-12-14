@@ -1,0 +1,8 @@
+﻿{
+  "name": "ChristmasMod",
+  "version_number": "1.0.1",
+  "website_url": "",
+  "description": "Christmas Mod for Against the Storm",
+  "dependencies": ["BepInEx-BepInExPack-5.4.2100"]
+}
+
