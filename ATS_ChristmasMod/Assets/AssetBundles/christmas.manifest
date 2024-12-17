@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1227971775
+CRC: 1969563578
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 70016dfffb2bf2ca3797a1f58f7e08aa
+    Hash: 0bba87ac618b608c8ee2f0b287e93a52
   TypeTreeHash:
     serializedVersion: 2
     Hash: c4fe1fdcbb1a331074c17958100faf9a
@@ -27,8 +27,12 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Christmas/ChristmasWorkshop.prefab
-- Assets/Christmas/TinselTree.prefab
-- Assets/Christmas/SnowFlake.mat
-- Assets/Christmas/ChristmasTree.prefab
+- Assets/Christmas/1) Raw Assets/Prefabs/Tinselwood_Buildings.mat
+- Assets/Christmas/1) Raw Assets/Prefabs/Snowperson.prefab
+- Assets/Christmas/1) Raw Assets/Prefabs/Deco_1x1_Wreath.prefab
+- Assets/Christmas/1) Raw Assets/Prefabs/Tinselwood.mat
+- Assets/Christmas/1) Raw Assets/Prefabs/Deco_3x3_YuleTree.prefab
+- Assets/Christmas/1) Raw Assets/Prefabs/Tinsel_Tree_1.prefab
+- Assets/Christmas/1) Raw Assets/Prefabs/Tinsel_Tree_2.prefab
+- Assets/Christmas/1) Raw Assets/Prefabs/Crude_Workshop_Jingle.prefab
 Dependencies: []

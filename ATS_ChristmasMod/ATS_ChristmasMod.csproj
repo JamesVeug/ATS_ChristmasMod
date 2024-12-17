@@ -73,8 +73,8 @@
         <Copy SourceFiles="icon.png" DestinationFolder="$(OutputPath)\ThunderStore\" />
 
         <ItemGroup>
-            <_CopyItems Include="$(OutputPath)\ThunderStore\**\*.*" />
-        </ItemGroup>
+            <_CopyItems Include="$(OutputPath)\ThunderStore\plugins\**\*.*" />
+        </ItemGroup>  
 
         <!-- Create a thunderstore folders to AgainstTheStorm game folder --> 
         <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(BepInExPath)\plugins\ChristmasMod-ChristmasMod\%(RecursiveDir)" />

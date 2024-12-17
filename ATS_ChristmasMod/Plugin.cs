@@ -2,6 +2,7 @@
 using System.Collections;
 using ATS_API.Biomes;
 using ATS_API.Buildings;
+using ATS_API.Decorations;
 using ATS_API.Helpers;
 using ATS_API.NaturalResource;
 using BepInEx;
@@ -55,17 +56,62 @@ public class Plugin : BaseUnityPlugin
         Harmony.CreateAndPatchAll(typeof(Plugin).Assembly, GUID);
         Log.LogInfo($"Asset bundle: {christmasBundle.name} is not null!");
         CreateExampleBiome();
+        CreateDecorations();
 
         EventBus.OnInitReferences.AddListener(ChangeWorkshopModel);
 
         Log.LogInfo($"{NAME} v{VERSION} Plugin loaded");
     }
 
+    private void CreateDecorations()
+    {
+        DecorationTierBuilder tier = new DecorationTierBuilder(GUID, "Festival");
+        tier.SetDisplayName("Festival");
+        tier.SetIcon("Icon_Workshop_Upgrade_Elf.png");
+        tier.SetColor(Color.magenta);
+        tier.AddReferenceCost((5, GoodsTypes.Mat_Processed_Planks));
+        
+        string hexColor = ColorUtility.ToHtmlStringRGB(Color.magenta);
+        
+        var wreath = new DecorationBuildingBuilder(GUID, "Wreath", "Icon_Deco_Wreath.png", tier.ID);
+        wreath.SetDisplayName("Wreath");
+        wreath.SetDescription(string.Format("<color=#{0}>Festival.</color> Celebration is important for a villagers soul. Decorations are used to level up Hearths.", hexColor));
+        wreath.SetLabel("Decorations");
+        wreath.AddRequiredGoods((1, GoodsTypes.Mat_Processed_Planks));
+        wreath.AddRequiredGoods((1, GoodsTypes.Mat_Processed_Fabric));
+        wreath.AddRequiredGoods((1, GoodsTypes.Mat_Processed_Bricks));
+        wreath.SetFootPrint(1, 1);
+        wreath.SetDecorationScore(1);
+        wreath.SetCustomModel(christmasBundle.LoadAsset<GameObject>("Deco_1x1_Wreath"));
+        
+        var yuleTree = new DecorationBuildingBuilder(GUID, "YuleTree", "Icon_Deco_YuleTree.png", tier.ID);
+        yuleTree.SetDisplayName("Yule Tree");
+        yuleTree.SetDescriptionKey(wreath.Model.description.key);
+        yuleTree.SetLabel("Decorations");
+        yuleTree.AddRequiredGoods((9, GoodsTypes.Mat_Processed_Planks));
+        yuleTree.AddRequiredGoods((9, GoodsTypes.Mat_Processed_Fabric));
+        yuleTree.AddRequiredGoods((9, GoodsTypes.Mat_Processed_Bricks));
+        yuleTree.SetFootPrint(3, 3);
+        yuleTree.SetDecorationScore(9);
+        yuleTree.SetCustomModel(christmasBundle.LoadAsset<GameObject>("Deco_3x3_YuleTree"));
+        
+        var snowman = new DecorationBuildingBuilder(GUID, "Snowman", "Icon_Deco_Snowman.png", tier.ID);
+        snowman.SetDisplayName("Snowman");
+        snowman.SetDescriptionKey(wreath.Model.description.key);
+        snowman.SetLabel("Decorations");
+        snowman.AddRequiredGoods((2, GoodsTypes.Mat_Processed_Planks));
+        snowman.AddRequiredGoods((2, GoodsTypes.Mat_Processed_Fabric));
+        snowman.AddRequiredGoods((2, GoodsTypes.Mat_Processed_Bricks));
+        snowman.SetFootPrint(2, 2);
+        snowman.SetDecorationScore(4);
+        snowman.SetCustomModel(christmasBundle.LoadAsset<GameObject>("Snowperson"));
+    }
+
     private void ChangeWorkshopModel()
     {
         WorkshopModel workshopBuildingModel = BuildingTypes.Crude_Workstation.ToBuildingModel() as WorkshopModel;
         WorkshopBuildingBuilder workshop = new WorkshopBuildingBuilder(workshopBuildingModel);
-        if (AssetBundleHelper.TryGet(christmasBundle, "ChristmasWorkshop", out GameObject christmasWorkshop))
+        if (AssetBundleHelper.TryGet(christmasBundle, "Crude_Workshop_Jingle", out GameObject christmasWorkshop))
         {
             workshop.SetCustomModel(christmasWorkshop);
         }
@@ -156,7 +202,7 @@ public class Plugin : BaseUnityPlugin
         resourceBuilder.AddFallSound("SE_tree_small_fall_3_r_jingle.wav");
         
         NaturalResourcePrefabBuilder treePrefab = new NaturalResourcePrefabBuilder(GUID, "SnowyTree1");
-        treePrefab.CreateNewPrefab(christmasBundle, "ChristmasTree");
+        treePrefab.CreateNewPrefab(christmasBundle, "Tinsel_Tree_1");
         resourceBuilder.AddPrefab(treePrefab);
     }
     
@@ -184,7 +230,7 @@ public class Plugin : BaseUnityPlugin
         resourceBuilder.AddFallSound("SE_tree_big_fall_3_r.wav");
         
         NaturalResourcePrefabBuilder treePrefab = new NaturalResourcePrefabBuilder(GUID, "TinselTree1");
-        treePrefab.CreateNewPrefab(christmasBundle, "TinselTree");
+        treePrefab.CreateNewPrefab(christmasBundle, "Tinsel_Tree_2");
         resourceBuilder.AddPrefab(treePrefab);
     }
 }

@@ -1,8 +1,8 @@
 ﻿{
   "name": "ChristmasMod",
-  "version_number": "1.0.1",
-  "website_url": "",
-  "description": "Christmas Mod for Against the Storm",
-  "dependencies": ["BepInEx-BepInExPack-5.4.2100"]
+  "version_number": "0.1.0",
+  "website_url": "https://github.com/JamesVeug/ATS_ChristmasMod",
+  "description": "WIP of a Christmas themed Mod that adds a custom Biome",
+  "dependencies": ["BepInEx-BepInExPack-5.4.2100", "ATS_API_Devs-API-3.1.0"]
 }
 
