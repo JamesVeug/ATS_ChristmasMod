@@ -163,15 +163,10 @@ public class Plugin : BaseUnityPlugin
         terrain.SetTerrainBaseTexture("TinselWood_Terrain1.png", 50, 50);
         terrain.SetTerrainOverlayTexture("TinselWood_Terrain4.png", 50, 50);
         terrain.SetTerrainCliffTexture("TinselWood_Terrain7.png", 50, 50);
-        terrain.SetTerrainBlendTexture("snowyTerrainBlend.png");
         // builder.SetWaterTexture("desertWorldWater.png");
 
         // FX
-        // if (AssetBundleHelper.TryGet(christmasBundle, "SnowFlake", out Material snowFlakeMaterial))
-        // {
-        //     builder.SetStormRaindropMaterial(snowFlakeMaterial);
-        // }
-        // builder.SetStormRaindropTextures("SnowFlake.png", "SnowFlake.png");
+        builder.SetRainParticles(christmasBundle, "SnowFlakeParticles");
 
         // Trees / natural resources
         ChristmasTree(builder);
