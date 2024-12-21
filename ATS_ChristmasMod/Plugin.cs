@@ -163,7 +163,9 @@ public class Plugin : BaseUnityPlugin
         terrain.SetTerrainBaseTexture("TinselWood_Terrain1.png", 50, 50);
         terrain.SetTerrainOverlayTexture("TinselWood_Terrain4.png", 50, 50);
         terrain.SetTerrainCliffTexture("TinselWood_Terrain7.png", 50, 50);
-        // builder.SetWaterTexture("desertWorldWater.png");
+        terrain.SetTerrainBlendTexture("snowyTerrainBlend.png");
+        terrain.SetWaterTexture("Winter_WorldWater.png");
+        terrain.SetFogTexture("Winter_Fog_0.png");
 
         // FX
         builder.SetRainParticles(christmasBundle, "SnowFlakeParticles");
@@ -171,6 +173,7 @@ public class Plugin : BaseUnityPlugin
         // Trees / natural resources
         ChristmasTree(builder);
         TinselTree(builder);
+        JingleBellTree(builder);
     }
 
     private void ChristmasTree(BiomeBuilder builder)
@@ -226,6 +229,34 @@ public class Plugin : BaseUnityPlugin
         
         NaturalResourcePrefabBuilder treePrefab = new NaturalResourcePrefabBuilder(GUID, "TinselTree1");
         treePrefab.CreateNewPrefab(christmasBundle, "Tinsel_Tree_2");
+        resourceBuilder.AddPrefab(treePrefab);
+    }
+    
+    private void JingleBellTree(BiomeBuilder builder)
+    {
+        NaturalResourceBuilder resourceBuilder = builder.NewNaturalResource("JingleBellTree",
+            horizontalTreshold: 0.2f,
+            verticalTreshold: 0.3f,
+            generationThreshold: 0.5f,
+            minDistanceFromOrigin: 0);
+        resourceBuilder.SetDisplayName("Jingle Bell Tree");
+        resourceBuilder.SetDescription("A favourite decoration during christmas.");
+        resourceBuilder.SetCharges(4);
+        resourceBuilder.SetProduction(GoodsTypes.Mat_Raw_Wood, 1);
+        resourceBuilder.AddExtraProduction(GoodsTypes.Metal_Copper_Ore, 1, 0.5f);
+        resourceBuilder.AddExtraProduction(GoodsTypes.Needs_Incense, 1, 0.3f);
+        resourceBuilder.AddExtraProduction(GoodsTypes.Crafting_Dye, 1, 0.2f);
+        resourceBuilder.AddGatherSound("SE_tree_big_1_r_jingle.wav");
+        resourceBuilder.AddGatherSound("SE_tree_big_2_r_jingle.wav");
+        resourceBuilder.AddGatherSound("SE_tree_big_3_r_jingle.wav");
+        resourceBuilder.AddGatherSound("SE_tree_big_4_r_jingle.wav");
+        resourceBuilder.AddGatherSound("SE_tree_big_5_r_jingle.wav");
+        resourceBuilder.AddFallSound("SE_tree_big_fall_1_r_jingle.wav");
+        resourceBuilder.AddFallSound("SE_tree_big_fall_2_r_jingle.wav");
+        resourceBuilder.AddFallSound("SE_tree_big_fall_3_r.wav");
+        
+        NaturalResourcePrefabBuilder treePrefab = new NaturalResourcePrefabBuilder(GUID, "TinselTree3");
+        treePrefab.CreateNewPrefab(christmasBundle, "Tinsel_Tree_3");
         resourceBuilder.AddPrefab(treePrefab);
     }
 }

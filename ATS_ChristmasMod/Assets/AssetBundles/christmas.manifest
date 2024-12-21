@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1866162363
+CRC: 1754288716
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bf004b3de6342067dd26dadd5e1c5a86
+    Hash: b91ef4155f4858dfb605b452d59183d3
   TypeTreeHash:
     serializedVersion: 2
     Hash: aef1b636b07df6a2288bf158f5b1c87a
@@ -39,5 +39,6 @@ Assets:
 - Assets/Christmas/1) Raw Assets/Prefabs/Tinsel_Tree_1.prefab
 - Assets/Christmas/RainDrop/SnowFlakeParticles.prefab
 - Assets/Christmas/1) Raw Assets/Prefabs/Tinsel_Tree_2.prefab
+- Assets/Christmas/1) Raw Assets/Prefabs/Tinsel_Tree_3.prefab
 - Assets/Christmas/1) Raw Assets/Prefabs/Crude_Workshop_Jingle.prefab
 Dependencies: []
