@@ -241,7 +241,7 @@ public class Plugin : BaseUnityPlugin
             minDistanceFromOrigin: 0);
         resourceBuilder.SetDisplayName("Jingle Bell Tree");
         resourceBuilder.SetDescription("A favourite decoration during christmas.");
-        resourceBuilder.SetCharges(4);
+        resourceBuilder.SetCharges(2);
         resourceBuilder.SetProduction(GoodsTypes.Mat_Raw_Wood, 1);
         resourceBuilder.AddExtraProduction(GoodsTypes.Metal_Copper_Ore, 1, 0.5f);
         resourceBuilder.AddExtraProduction(GoodsTypes.Needs_Incense, 1, 0.3f);
