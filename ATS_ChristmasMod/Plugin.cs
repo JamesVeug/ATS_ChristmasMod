@@ -3,35 +3,35 @@ using System.Collections;
 using ATS_API.Biomes;
 using ATS_API.Buildings;
 using ATS_API.Decorations;
+using ATS_API.Effects;
 using ATS_API.Helpers;
 using ATS_API.NaturalResource;
 using BepInEx;
 using BepInEx.Logging;
-using Eremite;
 using Eremite.Buildings;
-using Eremite.Controller;
 using Eremite.Model;
-using Eremite.Services;
-using Eremite.View.HUD;
-using Eremite.View.HUD.Monitors;
+using Eremite.Model.Effects;
+using Eremite.Model.Effects.Hooked;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-namespace ChristmasMod;
+namespace JingleBellHollow;
 
 [HarmonyPatch]
 [BepInPlugin(GUID, NAME, VERSION)]
 public class Plugin : BaseUnityPlugin
 {
-    private const string GUID = "ATS_ChristmasMod";
-    private const string NAME = "ATS_ChristmasMod";
+    private const string GUID = "Jingle_Bell_Hollow";
+    private const string NAME = "Jingle Bell Hollow";
     private const string VERSION = "1.0.1";
 
     public static Plugin Instance;
     public static ManualLogSource Log;
 
     private static AssetBundle christmasBundle;
+    
+    private DecorationTierBuilder festiveTier;
+    private HookedEffectBuilder festiveLights;
 
     private void Awake()
     {
@@ -55,7 +55,17 @@ public class Plugin : BaseUnityPlugin
 
         Harmony.CreateAndPatchAll(typeof(Plugin).Assembly, GUID);
         Log.LogInfo($"Asset bundle: {christmasBundle.name} is not null!");
-        CreateExampleBiome();
+        
+        
+        DecorationTierBuilder tier = new DecorationTierBuilder(GUID, "Festival");
+        tier.SetDisplayName("Festival");
+        tier.SetIcon("Icon_UI_DecorFestive.png");
+        tier.SetColor(Color.magenta);
+        tier.AddReferenceCost((5, GoodsTypes.Mat_Processed_Planks));
+        festiveTier = tier;
+        
+        CreateEffects();
+        CreateBiome();
         CreateDecorations();
 
         EventBus.OnInitReferences.AddListener(ChangeWorkshopModel);
@@ -63,45 +73,63 @@ public class Plugin : BaseUnityPlugin
         Log.LogInfo($"{NAME} v{VERSION} Plugin loaded");
     }
 
+    private void CreateEffects()
+    {
+        NewHookLogicType hookLogicType = CustomHookedEffectManager.NewHookLogic<DecorationPlacedHook, DecorationsOwnedHooksMonitor>(GUID, "FestiveLightsHook");
+        DecorationPlacedHook.ID = hookLogicType.ID;
+
+        festiveLights = new HookedEffectBuilder(GUID, "Festive Lights", "Icon_Modifier_Festive_Lights.png");
+        festiveLights.SetPositive(true);
+        festiveLights.SetDisplayName("Festive Lights");
+        festiveLights.SetDescription("The winter's chill is the time to spread the love and get the festivities going! " +
+                                     "Every 8 Festive decorations on your settlement increase Global Resolve by +1.");
+        festiveLights.SetDescriptionArgs((SourceType.Hook, Eremite.Model.Effects.Hooked.TextArgType.Amount, 0), (SourceType.HookedEffect, Eremite.Model.Effects.Hooked.TextArgType.Amount, 0));
+        festiveLights.SetPreviewDescription("+{0} Global Resolve");
+        festiveLights.SetPreviewDescriptionArgs((HookedStateTextArg.HookedStateTextSource.TotalGainIntFromHooked, 0));
+        DecorationPlacedHook hook = festiveLights.NewHook<DecorationPlacedHook>();
+        hook.tier = festiveTier.Model;
+        hook.amount = 8;
+
+        festiveLights.AddHookedEffect(EffectFactory.AddHookedEffect_IncreaseResolve(festiveLights, 1, ResolveEffectType.Global));
+    }
+
     private void CreateDecorations()
     {
-        DecorationTierBuilder tier = new DecorationTierBuilder(GUID, "Festival");
-        tier.SetDisplayName("Festival");
-        tier.SetIcon("Icon_Workshop_Upgrade_Elf.png");
-        tier.SetColor(Color.magenta);
-        tier.AddReferenceCost((5, GoodsTypes.Mat_Processed_Planks));
-        
         string hexColor = ColorUtility.ToHtmlStringRGB(Color.magenta);
+        DecorationTierTypes tier = festiveTier.ID;
         
-        var wreath = new DecorationBuildingBuilder(GUID, "Wreath", "Icon_Deco_Wreath.png", tier.ID);
+        var wreath = new DecorationBuildingBuilder(GUID, "Wreath", "Icon_Deco_Wreath.png", tier);
         wreath.SetDisplayName("Wreath");
-        wreath.SetDescription(string.Format("<color=#{0}>Festival.</color> Celebration is important for a villagers soul. Decorations are used to level up Hearths.", hexColor));
+        wreath.SetDescription(string.Format("<color=#{0}>Festival.</color> Celebration is important for a villagers soul.", hexColor));
         wreath.SetLabel("Decorations");
-        wreath.AddRequiredGoods((1, GoodsTypes.Mat_Processed_Planks));
-        wreath.AddRequiredGoods((1, GoodsTypes.Mat_Processed_Fabric));
-        wreath.AddRequiredGoods((1, GoodsTypes.Mat_Processed_Bricks));
+        wreath.AddRequiredGoods((1, GoodsTypes.Packs_Pack_Of_Luxury_Goods));
         wreath.SetFootPrint(1, 1);
         wreath.SetDecorationScore(1);
         wreath.SetCustomModel(christmasBundle.LoadAsset<GameObject>("Deco_1x1_Wreath"));
+        wreath.SetScaffoldingData(new BuildingConstructionAnimationData()
+        {
+            unconstructedPosition = new Vector3(0, -2, 0), // Move the building down 2 metres so its underground
+        });
         
-        var yuleTree = new DecorationBuildingBuilder(GUID, "YuleTree", "Icon_Deco_YuleTree.png", tier.ID);
+        var yuleTree = new DecorationBuildingBuilder(GUID, "YuleTree", "Icon_Deco_YuleTree.png", tier);
         yuleTree.SetDisplayName("Yule Tree");
         yuleTree.SetDescriptionKey(wreath.Model.description.key);
         yuleTree.SetLabel("Decorations");
-        yuleTree.AddRequiredGoods((9, GoodsTypes.Mat_Processed_Planks));
-        yuleTree.AddRequiredGoods((9, GoodsTypes.Mat_Processed_Fabric));
-        yuleTree.AddRequiredGoods((9, GoodsTypes.Mat_Processed_Bricks));
+        yuleTree.AddRequiredGoods((9, GoodsTypes.Packs_Pack_Of_Luxury_Goods));
         yuleTree.SetFootPrint(3, 3);
         yuleTree.SetDecorationScore(9);
         yuleTree.SetCustomModel(christmasBundle.LoadAsset<GameObject>("Deco_3x3_YuleTree"));
+        yuleTree.SetScaffoldingData(new BuildingConstructionAnimationData()
+        {
+            unconstructedPosition = new Vector3(0, -7, 0), // Move the building down 6 metres so its underground
+            levels = 7, // 7 levels of scaffolding
+        });
         
-        var snowman = new DecorationBuildingBuilder(GUID, "Snowman", "Icon_Deco_Snowman.png", tier.ID);
+        var snowman = new DecorationBuildingBuilder(GUID, "Snowman", "Icon_Deco_Snowman.png", tier);
         snowman.SetDisplayName("Snowman");
         snowman.SetDescriptionKey(wreath.Model.description.key);
         snowman.SetLabel("Decorations");
-        snowman.AddRequiredGoods((2, GoodsTypes.Mat_Processed_Planks));
-        snowman.AddRequiredGoods((2, GoodsTypes.Mat_Processed_Fabric));
-        snowman.AddRequiredGoods((2, GoodsTypes.Mat_Processed_Bricks));
+        snowman.AddRequiredGoods((4, GoodsTypes.Packs_Pack_Of_Luxury_Goods));
         snowman.SetFootPrint(2, 2);
         snowman.SetDecorationScore(4);
         snowman.SetCustomModel(christmasBundle.LoadAsset<GameObject>("Snowperson"));
@@ -118,10 +146,10 @@ public class Plugin : BaseUnityPlugin
         Log.LogInfo($"{NAME} v{VERSION} ChangeWorkshopModel");
     }
 
-    private void CreateExampleBiome()
+    private void CreateBiome()
     {
-        BiomeBuilder builder = new BiomeBuilder(GUID, "Tinselwood Hollow");
-        builder.SetDisplayName("Tinselwood Hollow");
+        BiomeBuilder builder = new BiomeBuilder(GUID, "JingleBellHollow");
+        builder.SetDisplayName("Jingle Bell Hollow");
         builder.SetDescription("A dark and enchanting snowy forest, with an assortment of \"old world\" yuletide decorations scattered throughout, and trees with glittering tinsel and strings of lights that glow on their heavy snow-laden boughs.\n");
         
         builder.SetTownName("South Pole");
@@ -152,7 +180,7 @@ public class Plugin : BaseUnityPlugin
         builder.SetWorldMapTexture("TWH_WorldMapTerrain.png");
 
         // Starting effect
-        // builder.AddEffect(DiamondHunterBuilder.EffectType);
+        builder.AddEffect(festiveLights.EffectType);
         builder.SetDeclinedSeasonalRewardsReward(GoodsTypes.Valuable_Amber, 2);
 
         // Soil
@@ -160,12 +188,13 @@ public class Plugin : BaseUnityPlugin
         
         // Terrain
         MaskedTerrain terrain = builder.CreateTerrain<MaskedTerrain>();
-        terrain.SetTerrainBaseTexture("TinselWood_Terrain1.png", 50, 50);
-        terrain.SetTerrainOverlayTexture("TinselWood_Terrain4.png", 50, 50);
-        terrain.SetTerrainCliffTexture("TinselWood_Terrain7.png", 50, 50);
+        terrain.SetTerrainBaseTexture("TinselWood_Terrain1_b.png", 50, 50);
+        terrain.SetTerrainOverlayTexture("TinselWood_Terrain2_b.png", 50, 50);
+        terrain.SetTerrainCliffTexture("TinselWood_Terrain3_b.png", 50, 50);
         terrain.SetTerrainBlendTexture("snowyTerrainBlend.png");
         terrain.SetWaterTexture("Winter_WorldWater.png");
-        terrain.SetFogTexture("Winter_Fog_0.png");
+        terrain.SetWaterSpeed(Vector2.zero, Vector2.zero, 0);
+        terrain.SetFogTexture("Winter_Fog_Bottom.png", "Winter_Fog_Top.png");
 
         // FX
         builder.SetRainParticles(christmasBundle, "SnowFlakeParticles");

@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <AssemblyName>ChristmasMod</AssemblyName>
-        <Description>Its Snowing</Description>
+        <AssemblyName>JingleBellHollow</AssemblyName>
+        <Description>A custom biome with unique mechanics, visuals and sounds.</Description>
         <Version>1.0.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
@@ -41,6 +41,9 @@
           <HintPath>..\..\..\Users\james\AppData\Roaming\Thunderstore Mod Manager\DataFolder\AgainstTheStorm\profiles\Default\BepInEx\plugins\ATS_API_Devs-API\API.dll</HintPath>
           <Private>False</Private>
         </Reference>
+        <Reference Include="UniRx">
+          <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Against the Storm\Against the Storm_Data\Managed\UniRx.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
@@ -77,11 +80,11 @@
         </ItemGroup>  
 
         <!-- Create a thunderstore folders to AgainstTheStorm game folder --> 
-        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(BepInExPath)\plugins\ChristmasMod-ChristmasMod\%(RecursiveDir)" />
-        <Copy SourceFiles="README.md" DestinationFolder="$(BepInExPath)\plugins\ChristmasMod-ChristmasMod\" />
-        <Copy SourceFiles="manifest.json" DestinationFolder="$(BepInExPath)\plugins\ChristmasMod-ChristmasMod\" />
-        <Copy SourceFiles="icon.png" DestinationFolder="$(BepInExPath)\plugins\ChristmasMod-ChristmasMod\" />
-        <Copy SourceFiles="@(Assembly)" DestinationFolder="$(BepInExPath)\plugins\ChristmasMod-ChristmasMod\" />
+        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(BepInExPath)\plugins\JingleBellHollowDevs-JingleBellHollow\%(RecursiveDir)" />
+        <Copy SourceFiles="README.md" DestinationFolder="$(BepInExPath)\plugins\JingleBellHollowDevs-JingleBellHollow\" />
+        <Copy SourceFiles="manifest.json" DestinationFolder="$(BepInExPath)\plugins\JingleBellHollowDevs-JingleBellHollow\" />
+        <Copy SourceFiles="icon.png" DestinationFolder="$(BepInExPath)\plugins\JingleBellHollowDevs-JingleBellHollow\" />
+        <Copy SourceFiles="@(Assembly)" DestinationFolder="$(BepInExPath)\plugins\JingleBellHollowDevs-JingleBellHollow\" />
 
         <!-- Run Against The Storm -->
         <!--         <Exec Command='call "$(StormPath)/Against The Storm.exe"' IgnoreExitCode="true"/>-->
