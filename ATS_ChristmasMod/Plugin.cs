@@ -5,6 +5,7 @@ using ATS_API.Buildings;
 using ATS_API.Decorations;
 using ATS_API.Effects;
 using ATS_API.Helpers;
+using ATS_API.Localization;
 using ATS_API.NaturalResource;
 using BepInEx;
 using BepInEx.Logging;
@@ -32,6 +33,8 @@ public class Plugin : BaseUnityPlugin
     
     private DecorationTierBuilder festiveTier;
     private HookedEffectBuilder festiveLights;
+    private static string festiveDecorationColor = ColorUtility.ToHtmlStringRGB(Color.magenta);
+    private static string festival = string.Format("<color=#{0}>Festival</color>", festiveDecorationColor);
 
     private void Awake()
     {
@@ -80,12 +83,24 @@ public class Plugin : BaseUnityPlugin
 
         festiveLights = new HookedEffectBuilder(GUID, "Festive Lights", "Icon_Modifier_Festive_Lights.png");
         festiveLights.SetPositive(true);
+        festiveLights.SetLabelKey(Keys.BiomeEffect);
         festiveLights.SetDisplayName("Festive Lights");
-        festiveLights.SetDescription("The winter's chill is the time to spread the love and get the festivities going! " +
-                                     "Every 8 Festive decorations on your settlement increase Global Resolve by +1.");
+        festiveLights.SetDescription($"The winter's chill is the time to spread the love and get the festivities going! " +
+                                     "Every {0} " + festival + " decorations on your settlement increase Global Resolve by +{1}.");
         festiveLights.SetDescriptionArgs((SourceType.Hook, Eremite.Model.Effects.Hooked.TextArgType.Amount, 0), (SourceType.HookedEffect, Eremite.Model.Effects.Hooked.TextArgType.Amount, 0));
-        festiveLights.SetPreviewDescription("+{0} Global Resolve");
-        festiveLights.SetPreviewDescriptionArgs((HookedStateTextArg.HookedStateTextSource.TotalGainIntFromHooked, 0));
+        
+        // Progress: {0}/{1}. Gained: {2}
+        festiveLights.SetPreviewDescriptionKey("Effect_StatePreview_Generic_Progress&Gained");
+        festiveLights.SetPreviewDescriptionArgs((HookedStateTextArg.HookedStateTextSource.ProgressInt, 0),
+            (HookedStateTextArg.HookedStateTextSource.HookAmountInt, 0),
+            (HookedStateTextArg.HookedStateTextSource.TotalGainIntFromHooked, 0));
+        
+        // Expected gain: {2}. Progress: {0}/{1}
+        festiveLights.SetRetroactiveDescriptionKey("Effect_RetroPreview_Generic_Progress&Gained");
+        festiveLights.SetRetroactiveDescriptionArgs((HookedStateTextArg.HookedStateTextSource.ProgressInt, 0), 
+            (HookedStateTextArg.HookedStateTextSource.HookAmountInt, 0), 
+            (HookedStateTextArg.HookedStateTextSource.TotalGainIntFromHooked, 0));
+        
         DecorationPlacedHook hook = festiveLights.NewHook<DecorationPlacedHook>();
         hook.tier = festiveTier.Model;
         hook.amount = 8;
@@ -95,13 +110,11 @@ public class Plugin : BaseUnityPlugin
 
     private void CreateDecorations()
     {
-        string hexColor = ColorUtility.ToHtmlStringRGB(Color.magenta);
         DecorationTierTypes tier = festiveTier.ID;
         
         var wreath = new DecorationBuildingBuilder(GUID, "Wreath", "Icon_Deco_Wreath.png", tier);
         wreath.SetDisplayName("Wreath");
-        wreath.SetDescription(string.Format("<color=#{0}>Festival.</color> Celebration is important for a villagers soul.", hexColor));
-        wreath.SetLabel("Decorations");
+        wreath.SetDescription($"{festival}. Celebration is important for a villagers soul.");
         wreath.AddRequiredGoods((1, GoodsTypes.Packs_Pack_Of_Luxury_Goods));
         wreath.SetFootPrint(1, 1);
         wreath.SetDecorationScore(1);
@@ -114,7 +127,6 @@ public class Plugin : BaseUnityPlugin
         var yuleTree = new DecorationBuildingBuilder(GUID, "YuleTree", "Icon_Deco_YuleTree.png", tier);
         yuleTree.SetDisplayName("Yule Tree");
         yuleTree.SetDescriptionKey(wreath.Model.description.key);
-        yuleTree.SetLabel("Decorations");
         yuleTree.AddRequiredGoods((9, GoodsTypes.Packs_Pack_Of_Luxury_Goods));
         yuleTree.SetFootPrint(3, 3);
         yuleTree.SetDecorationScore(9);
@@ -128,7 +140,6 @@ public class Plugin : BaseUnityPlugin
         var snowman = new DecorationBuildingBuilder(GUID, "Snowman", "Icon_Deco_Snowman.png", tier);
         snowman.SetDisplayName("Snowman");
         snowman.SetDescriptionKey(wreath.Model.description.key);
-        snowman.SetLabel("Decorations");
         snowman.AddRequiredGoods((4, GoodsTypes.Packs_Pack_Of_Luxury_Goods));
         snowman.SetFootPrint(2, 2);
         snowman.SetDecorationScore(4);

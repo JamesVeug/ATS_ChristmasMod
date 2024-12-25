@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Eremite.Buildings;
 using Eremite.Controller.Effects;
 using Eremite.Model.Effects;
+using Eremite.Model.Orders;
 using Eremite.Services;
 using UniRx;
 
@@ -27,6 +29,11 @@ public class DecorationPlacedHook : HookLogic
     public override string GetAmountText()
     {
         return amount.ToString();
+    }
+    
+    public override int GetIntAmount()
+    {
+        return amount;
     }
 
     public override HookLogicType Type => ID;
