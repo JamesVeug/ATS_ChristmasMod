@@ -195,7 +195,7 @@ public class Plugin : BaseUnityPlugin
         builder.SetDeclinedSeasonalRewardsReward(GoodsTypes.Valuable_Amber, 2);
 
         // Soil
-        builder.SetSoilText(BiomeBuilder.SoilGrade.None);
+        builder.SetSoilText(BiomeBuilder.SoilGrade.Medium);
         
         // Terrain
         MaskedTerrain terrain = builder.CreateTerrain<MaskedTerrain>();
