@@ -124,6 +124,14 @@ public class Plugin : BaseUnityPlugin
             unconstructedPosition = new Vector3(0, -2, 0), // Move the building down 2 metres so its underground
         });
         
+        var snowman = new DecorationBuildingBuilder(GUID, "Snowman", "Icon_Deco_Snowman.png", tier);
+        snowman.SetDisplayName("Snowman");
+        snowman.SetDescriptionKey(wreath.Model.description.key);
+        snowman.AddRequiredGoods((4, GoodsTypes.Packs_Pack_Of_Luxury_Goods));
+        snowman.SetFootPrint(2, 2);
+        snowman.SetDecorationScore(4);
+        snowman.SetCustomModel(christmasBundle.LoadAsset<GameObject>("Snowperson"));
+        
         var yuleTree = new DecorationBuildingBuilder(GUID, "YuleTree", "Icon_Deco_YuleTree.png", tier);
         yuleTree.SetDisplayName("Yule Tree");
         yuleTree.SetDescriptionKey(wreath.Model.description.key);
@@ -136,14 +144,6 @@ public class Plugin : BaseUnityPlugin
             unconstructedPosition = new Vector3(0, -7, 0), // Move the building down 6 metres so its underground
             levels = 7, // 7 levels of scaffolding
         });
-        
-        var snowman = new DecorationBuildingBuilder(GUID, "Snowman", "Icon_Deco_Snowman.png", tier);
-        snowman.SetDisplayName("Snowman");
-        snowman.SetDescriptionKey(wreath.Model.description.key);
-        snowman.AddRequiredGoods((4, GoodsTypes.Packs_Pack_Of_Luxury_Goods));
-        snowman.SetFootPrint(2, 2);
-        snowman.SetDecorationScore(4);
-        snowman.SetCustomModel(christmasBundle.LoadAsset<GameObject>("Snowperson"));
     }
 
     private void ChangeWorkshopModel()
