@@ -240,6 +240,7 @@ public class Plugin : BaseUnityPlugin
         resourceBuilder.AddFallSound("SE_tree_small_fall_3_r_jingle.wav");
         
         NaturalResourcePrefabBuilder treePrefab = new NaturalResourcePrefabBuilder(GUID, "SnowyTree1");
+        treePrefab.UseHighlightingShader("Tinselwood_Trees1_b.png");
         treePrefab.CreateNewPrefab(christmasBundle, "Tinsel_Tree_1");
         resourceBuilder.AddPrefab(treePrefab);
     }
@@ -268,6 +269,7 @@ public class Plugin : BaseUnityPlugin
         resourceBuilder.AddFallSound("SE_tree_big_fall_3_r.wav");
         
         NaturalResourcePrefabBuilder treePrefab = new NaturalResourcePrefabBuilder(GUID, "TinselTree1");
+        treePrefab.UseHighlightingShader("Tinselwood_Trees1_b.png");
         treePrefab.CreateNewPrefab(christmasBundle, "Tinsel_Tree_2");
         resourceBuilder.AddPrefab(treePrefab);
     }
@@ -296,6 +298,7 @@ public class Plugin : BaseUnityPlugin
         resourceBuilder.AddFallSound("SE_tree_big_fall_3_r.wav");
         
         NaturalResourcePrefabBuilder treePrefab = new NaturalResourcePrefabBuilder(GUID, "TinselTree3");
+        treePrefab.UseHighlightingShader("Tinselwood_Buildings_01_b.png");
         treePrefab.CreateNewPrefab(christmasBundle, "Tinsel_Tree_3");
         resourceBuilder.AddPrefab(treePrefab);
     }
