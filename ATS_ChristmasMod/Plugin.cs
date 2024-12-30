@@ -24,7 +24,7 @@ public class Plugin : BaseUnityPlugin
 {
     private const string GUID = "Jingle_Bell_Hollow";
     private const string NAME = "Jingle Bell Hollow";
-    private const string VERSION = "1.0.1";
+    private const string VERSION = "1.0.2";
 
     public static Plugin Instance;
     public static ManualLogSource Log;
