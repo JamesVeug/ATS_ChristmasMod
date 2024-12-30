@@ -1,8 +1,8 @@
 ﻿{
   "name": "JingleBellHollow",
-  "version_number": "1.0.0",
+  "version_number": "1.0.1",
   "website_url": "https://github.com/JamesVeug/ATS_ChristmasMod",
   "description": "A custom biome with unique mechanics, visuals and sounds.",
-  "dependencies": ["BepInEx-BepInExPack-5.4.2100", "ATS_API_Devs-API-3.2.0"]
+  "dependencies": ["BepInEx-BepInExPack-5.4.2100", "ATS_API_Devs-API-3.3.0"]
 }
 

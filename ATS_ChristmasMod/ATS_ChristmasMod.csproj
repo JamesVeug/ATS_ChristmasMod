@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <AssemblyName>JingleBellHollow</AssemblyName>
         <Description>A custom biome with unique mechanics, visuals and sounds.</Description>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
         <StormPath>C:\Program Files (x86)\Steam\steamapps\common\Against the Storm</StormPath>
